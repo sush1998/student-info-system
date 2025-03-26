@@ -1,4 +1,4 @@
-# 🧾 Student Information System (INFO 600 - Assignment 3)
+# 🧾 Student Information System 
 
 This is a simple web application built with **Node.js** that demonstrates dynamic webpage interaction using **AJAX**, styled interfaces with **CSS**, and backend integration. It allows users to retrieve student records without refreshing the entire page.
 

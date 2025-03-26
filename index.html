@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Student Information Systems</title>
+    <style>
+        /* Step 2.1: Applying background color to entire page */
+        body {
+            background-color: #d3e0ea;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        /* Logo image style, by id selector */
+        #logo {
+            width: 50%; 
+            display: block;
+            margin: 0 auto;
+        } 
+        /* Step 2.2: Centering the heading (h1) text */
+        h1 {
+            text-align: center;
+            color: #003366;
+        }
+
+        /* Button Styling */
+        .retrieve-btn {
+            background-color: #007bff; /* Original button color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        /* Step 4.1: Change button color on click */
+        .retrieve-btn.clicked {
+            background-color: #a3c9ff; /* Lighter shade */
+        }
+
+        /* Table Styling */
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 60%;
+            background: white;
+            display: none; /* Initially hidden */
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #003366;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- logo image -->
+    <img id="logo" src="https://sis.berkeley.edu/sites/default/files/styles/openberkeley_image_full/public/general/sis_hero-wide.png" alt="SIS Logo">
+    <h1>University Student Information Systems</h1>
+    <p>This system allows administrators to access and manage student academic records.</p>
+    
+    <button id="retrieve-btn" class="retrieve-btn">Retrieve Student Records</button>
+
+    <!-- Step 4.2: Placeholder for dynamically added heading -->
+    <h2 id="student-header" style="display: none;"></h2>
+
+    <!-- Step 4.3: Placeholder for table -->
+    <table id="student-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Major</th>
+                <th>Admission Year</th>
+            </tr>
+        </thead>
+        <tbody id="student-data"></tbody>
+    </table>
+
+    <script>
+        document.getElementById("retrieve-btn").addEventListener("click", function () {
+            this.classList.add("clicked");
+    
+            let studentHeader = document.getElementById("student-header");
+            studentHeader.innerText = "Student Records --- retrieved by Sushant"; 
+            studentHeader.style.display = "block";
+    
+            // FIX: Send AJAX request to '/students' instead of '/students.html'
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "./students", true); // ✅ FIXED: Correct endpoint
+    
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let studentTable = document.getElementById("student-table");
+                    let studentData = document.getElementById("student-data");
+    
+                    let students = JSON.parse(xhr.responseText); // Parse JSON data
+                    studentData.innerHTML = ""; // Clear previous data
+    
+                    students.forEach(student => {
+                        let row = `<tr>
+                            <td>${student.name}</td>
+                            <td>${student.major}</td>
+                            <td>${student.admissionYear}</td>
+                        </tr>`;
+                        studentData.innerHTML += row;
+                    });
+    
+                    studentTable.style.display = "table"; // Show the table
+                }
+            };
+    
+            xhr.send(); // Send request
+        });
+    </script>
+    
+
+    
+</body>
+</html>
